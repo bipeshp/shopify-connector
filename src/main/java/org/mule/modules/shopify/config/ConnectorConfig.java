@@ -102,16 +102,4 @@ public class ConnectorConfig {
 	public void setApikey(String apikey) {
 		this.apikey = apikey;
 	}
-	
-	
-//	public static void main(String[] args) throws ClientProtocolException, IOException {
-//    	CloseableHttpClient httpClient = HttpClients.createDefault();
-//    	
-//    		HttpGet request = new HttpGet("https://tip-top-sport.myshopify.com/admin/products.json?limit=1&fields=id");
-//    		String token = Base64.encodeBytes(new String("320d694cfbbe8800537abd287d7faff2"  + ":" + "25ac58f57bc207c332b13d94a0b520e6").getBytes());
-//    		request.addHeader("Authorization", "Basic " + token.replaceAll("\n", ""));
-//    		String productResponseBody = httpClient.execute(request, new DefaultResponseHandler());
-//    		System.out.println(productResponseBody);
-//		
-//	}
 }

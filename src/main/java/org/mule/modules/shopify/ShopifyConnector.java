@@ -70,19 +70,4 @@ public class ShopifyConnector {
         this.config = config;
     }
     
-//    public static void main(String[] args) throws ClientProtocolException, IOException, JSONException  {
-//    	String resource = "orders";
-//    	CloseableHttpClient httpClient = HttpClients.createDefault();
-//        
-//    	String url = String.format("%s/admin/%s.json?fields=%s&page=%s&limit=%s","https://tip-top-sport.myshopify.com",resource,"","1","50");
-//    	String token = Base64.encodeBytes(new String("320d694cfbbe8800537abd287d7faff2" + ":" + "25ac58f57bc207c332b13d94a0b520e6").getBytes());
-//    	HttpGet request = new HttpGet(url);
-//    	request.addHeader("Authorization", "Basic " + token.replaceAll("\n", ""));
-//    	String ordersResponseBody = httpClient.execute(request, new DefaultResponseHandler()); 
-//    	
-//    	
-//    	
-//    	System.out.println(ordersResponseBody);
-//	}
-
 }
