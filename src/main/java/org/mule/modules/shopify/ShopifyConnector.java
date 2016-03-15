@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
@@ -58,9 +60,20 @@ public class ShopifyConnector {
     	// Here we remove the \n that is placed inside the Base64 String as it is too long and the encryptors add a line break to it.
     	// If we leave this line break the authentication fails
     	request.addHeader("Authorization", "Basic " + token.replaceAll("\n", ""));
+    	request.addHeader("Content-Type", "application/json");
     }
     
-    
+    @Processor
+    public JSONObject createProduct(String requestBody) throws IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+    	String url = String.format("%s/admin/%s.json",this.config.getHostname(),"products");
+    	HttpPost request = new HttpPost(url);
+    	this.addCredentails(request);
+    	request.setEntity(new ByteArrayEntity(requestBody.getBytes()));
+    	String ordersResponseBody = httpClient.execute(request, new DefaultResponseHandler());
+    	JSONObject jsonObject = new JSONObject(ordersResponseBody);
+		return jsonObject.getJSONObject("product");
+    }
 
     public ConnectorConfig getConfig() {
         return config;

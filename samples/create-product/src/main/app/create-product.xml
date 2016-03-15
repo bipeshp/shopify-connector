@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <shopify:config name="Shopify__Shopify_Configuration" apikey="aacf4bddc6ef5f2b715f51332a6b62b8" password="4385eecb3923e5b8b6c73be1d90426d1" hostname="https://test-bushido-s.myshopify.com" doc:name="Shopify: Shopify Configuration"/>
+    <flow name="test-shopifyFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/product" doc:name="HTTP"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+  "product": {
+    "title": "Burton as Custom Freestlye 151",
+    "body_html": "<strong>Good snowboard!<\/strong>",
+    "vendor": "Burton",
+    "product_type": "Snowboard",
+    "images": [
+      {
+        "src": "http:\/\/example.com\/rails_logo.gif"
+      }
+    ],
+    "metafields": [
+      {
+        "key": "new",
+        "value": "newvalue",
+        "value_type": "string",
+        "namespace": "global"
+      }
+    ]    
+  }
+}
+
+]]></dw:set-payload>
+        </dw:transform-message>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <shopify:create-product config-ref="Shopify__Shopify_Configuration" requestBody="#[payload]" doc:name="Create product"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+    </flow>
+</mule>
